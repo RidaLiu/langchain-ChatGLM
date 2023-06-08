@@ -37,6 +37,7 @@ export default defineConfig((env) => {
       open: false,
       proxy: {
         '/api': {
+          // target: 'http://139.84.132.13:7734',
           target: 'http://127.0.0.1:7861',
           changeOrigin: true, // 允许跨域
           rewrite: path => path.replace('/api/', ''),
