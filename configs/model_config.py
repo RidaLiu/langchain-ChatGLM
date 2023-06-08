@@ -20,7 +20,13 @@ embedding_model_dict = {
 EMBEDDING_MODEL = "text2vec"
 
 # Embedding running device
-EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+EMBEDDING_DEVICE = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
 
 
 # supported LLM models
@@ -30,67 +36,72 @@ llm_model_dict = {
         "name": "chatglm-6b-int4-qe",
         "pretrained_model_name": "THUDM/chatglm-6b-int4-qe",
         "local_model_path": None,
-        "provides": "ChatGLM"
+        "provides": "ChatGLM",
     },
     "chatglm-6b-int4": {
         "name": "chatglm-6b-int4",
         "pretrained_model_name": "THUDM/chatglm-6b-int4",
         "local_model_path": None,
-        "provides": "ChatGLM"
+        "provides": "ChatGLM",
     },
     "chatglm-6b-int8": {
         "name": "chatglm-6b-int8",
         "pretrained_model_name": "THUDM/chatglm-6b-int8",
         "local_model_path": None,
-        "provides": "ChatGLM"
+        "provides": "ChatGLM",
     },
     "chatglm-6b": {
         "name": "chatglm-6b",
         "pretrained_model_name": "THUDM/chatglm-6b",
         "local_model_path": None,
-        "provides": "ChatGLM"
+        "provides": "ChatGLM",
     },
-
     "chatyuan": {
         "name": "chatyuan",
         "pretrained_model_name": "ClueAI/ChatYuan-large-v2",
         "local_model_path": None,
-        "provides": None
+        "provides": None,
     },
     "moss": {
         "name": "moss",
         "pretrained_model_name": "fnlp/moss-moon-003-sft",
         "local_model_path": None,
-        "provides": "MOSSLLM"
+        "provides": "MOSSLLM",
     },
     "vicuna-13b-hf": {
         "name": "vicuna-13b-hf",
         "pretrained_model_name": "vicuna-13b-hf",
         "local_model_path": None,
-        "provides": "LLamaLLM"
+        "provides": "LLamaLLM",
     },
-
     # 通过 fastchat 调用的模型请参考如下格式
     "fastchat-chatglm-6b": {
         "name": "chatglm-6b",  # "name"修改为fastchat服务中的"model_name"
         "pretrained_model_name": "chatglm-6b",
         "local_model_path": None,
         "provides": "FastChatOpenAILLM",  # 使用fastchat api时，需保证"provides"为"FastChatOpenAILLM"
-        "api_base_url": "http://localhost:8000/v1"  # "name"修改为fastchat服务中的"api_base_url"
+        "api_base_url": "http://localhost:8000/v1",  # "name"修改为fastchat服务中的"api_base_url"
     },
-
     # 通过 fastchat 调用的模型请参考如下格式
     "fastchat-vicuna-13b-hf": {
         "name": "vicuna-13b-hf",  # "name"修改为fastchat服务中的"model_name"
         "pretrained_model_name": "vicuna-13b-hf",
         "local_model_path": None,
         "provides": "FastChatOpenAILLM",  # 使用fastchat api时，需保证"provides"为"FastChatOpenAILLM"
-        "api_base_url": "http://localhost:8000/v1"  # "name"修改为fastchat服务中的"api_base_url"
+        "api_base_url": "http://localhost:8000/v1",  # "name"修改为fastchat服务中的"api_base_url"
+    },
+    # 通过 fastchat 调用的模型请参考如下格式
+    "fastchat-openai-gpt3.5": {
+        "name": "gpt-3.5-turbo",  # "name"修改为fastchat服务中的"model_name"
+        "pretrained_model_name": None,
+        "local_model_path": None,
+        "provides": "FastChatOpenAILLM",  # 使用fastchat api时，需保证"provides"为"FastChatOpenAILLM"
+        "api_base_url": "https://api.openai.com/v1/",  # "name"修改为fastchat服务中的"api_base_url"
     },
 }
 
 # LLM 名称
-LLM_MODEL = "chatglm-6b"
+LLM_MODEL = "fastchat-openai-gpt3.5"
 # 如果你需要加载本地的model，指定这个参数  ` --no-remote-model`，或者下方参数修改为 `True`
 NO_REMOTE_MODEL = False
 # 量化加载8bit 模型
@@ -113,12 +124,22 @@ STREAMING = True
 USE_PTUNING_V2 = False
 
 # LLM running device
-LLM_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+LLM_DEVICE = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
 
 
-VS_ROOT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "vector_store")
+VS_ROOT_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "vector_store"
+)
 
-UPLOAD_ROOT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "content")
+UPLOAD_ROOT_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "content"
+)
 
 # 基于上下文的prompt模版，请务必保留"{question}"和"{context}"
 PROMPT_TEMPLATE = """已知信息：
@@ -144,17 +165,21 @@ VECTOR_SEARCH_TOP_K = 5
 # 知识检索内容相关度 Score, 数值范围约为0-1100，如果为0，则不生效，经测试设置为小于500时，匹配结果更精准
 VECTOR_SEARCH_SCORE_THRESHOLD = 0
 
-NLTK_DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "nltk_data")
+NLTK_DATA_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "nltk_data"
+)
 
 FLAG_USER_NAME = uuid.uuid4().hex
 
-logger.info(f"""
+logger.info(
+    f"""
 loading model config
 llm device: {LLM_DEVICE}
 embedding device: {EMBEDDING_DEVICE}
 dir: {os.path.dirname(os.path.dirname(__file__))}
 flagging username: {FLAG_USER_NAME}
-""")
+"""
+)
 
 # 是否开启跨域，默认为False，如果需要开启，请设置为True
 # is open cross domain
