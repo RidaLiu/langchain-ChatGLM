@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    image: localhost/langchain-chatglm:latest
+    container_name: chat
+    ports:
+      - "7733:7860"
+    volumes:
+      - ./:/chatGLM/
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=secret_key_value
+      - CALL_AZURE_OPENAI=True
+      - AZURE_OPENAI_KEY=''
+      - AZURE_OPENAI_ENDPOINT='https://sandbox-openai-east-us.openai.azure.com'
+      - AZURE_OPENAI_VERSION='2023-03-15-preview'
+      - AZURE_OPENAI_ENGINE='gpt-35-turbo-version-0301'
+    # command: python -u webui.py
+    command: tail -F /dev/null
