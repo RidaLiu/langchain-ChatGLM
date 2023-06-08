@@ -16,9 +16,10 @@ COPY . /app
 RUN pnpm run build
 
 
-
-COPY --from=frontend /app/dist /app/public
+FROM nginx:latest
+COPY --from=frontend /app/dist /usr/share/nginx/html
+# COPY --from=frontend /app/dist /app/public
 
 EXPOSE 3002
 
-CMD ["pnpm", "run", "preview"]
+# CMD ["pnpm", "run", "preview"]
