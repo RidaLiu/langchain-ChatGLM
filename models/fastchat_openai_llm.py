@@ -19,6 +19,13 @@ def _build_message_template() -> Dict[str, str]:
     }
 
 
+def _read_file(file_path: str) -> str:
+    if os.path.exists(file_path):
+        r = open(file_path, "r")
+        return r.read()
+    return ""
+
+
 class FastChatOpenAILLM(RemoteRpcModel, LLM, ABC):
     api_base_url: str = "http://localhost:8000/v1"
     model_name: str = "chatglm-6b"
@@ -102,11 +109,15 @@ class FastChatOpenAILLM(RemoteRpcModel, LLM, ABC):
             # Not support yet
             if os.getenv("CALL_AZURE_OPENAI") == "True":
                 openai.api_type = "azure"
-                openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-                openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
-                openai.api_key = os.getenv("AZURE_OPENAI_KEY")
+                openai.api_base = _read_file(
+                    os.getenv("AZURE_OPENAI_ENDPOINT_FILE")
+                )
+                openai.api_version = _read_file(
+                    os.getenv("AZURE_OPENAI_VERSION_FILE")
+                )
+                openai.api_key = _read_file(os.getenv("AZURE_OPENAI_KEY_FILE"))
                 completion = openai.ChatCompletion.create(
-                    engine=os.getenv("AZURE_OPENAI_ENGINE"),
+                    engine=_read_file(os.getenv("AZURE_OPENAI_ENGINE_FILE")),
                     model=self.model_name,
                     messages=self.build_message_list(prompt),
                 )
