@@ -21,7 +21,21 @@ services:
       - chat-azure-gpt-api-key
       - chat-gpt35-api-key
     # command: python -u webui.py
+    # command: python -u api.py
     command: tail -F /dev/null
+
+  chat-view:
+    build:
+      context: .
+      dockerfile: views/Dockerfile
+    # image: localhost/chat-view:latest
+    container_name: chatview
+    ports:
+      - "8080:80"
+      - "8043:443"
+    volumes:
+      - ./views/docker-compose/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+
 secrets:
    chat-azure-gpt-version:
      external: true
