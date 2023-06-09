@@ -9,12 +9,25 @@ services:
     volumes:
       - ./:/chatGLM/
     environment:
-      - DEBUG=True
-      - SECRET_KEY=secret_key_value
+      - GPT35_KEY_FILE=/run/secrets/chat-gpt35-api-key
       - CALL_AZURE_OPENAI=True
-      - AZURE_OPENAI_KEY=''
-      - AZURE_OPENAI_ENDPOINT='https://sandbox-openai-east-us.openai.azure.com'
-      - AZURE_OPENAI_VERSION='2023-03-15-preview'
-      - AZURE_OPENAI_ENGINE='gpt-35-turbo-version-0301'
+      - AZURE_OPENAI_ENDPOINT_FILE='https://sandbox-openai-east-us.openai.azure.com'
+      - AZURE_OPENAI_KEY_FILE=/run/secrets/chat-azure-gpt-api-key
+      - AZURE_OPENAI_VERSION_FILE=/run/secrets/chat-azure-gpt-version
+      - AZURE_OPENAI_ENGINE_FILE=/run/secrets/chat-azure-gpt-engine
+    secrets:
+      - chat-azure-gpt-version
+      - chat-azure-gpt-engine
+      - chat-azure-gpt-api-key
+      - chat-gpt35-api-key
     # command: python -u webui.py
     command: tail -F /dev/null
+secrets:
+   chat-azure-gpt-version:
+     external: true
+   chat-azure-gpt-engine:
+     external: true
+   chat-azure-gpt-api-key:
+     external: true
+   chat-gpt35-api-key:
+     external: true
