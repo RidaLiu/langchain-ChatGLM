@@ -22,7 +22,7 @@ class InvalidScoreLogitsProcessor(LogitsProcessor):
 
 class LLamaLLM(BaseAnswer, LLM, ABC):
     checkPoint: LoaderCheckPoint = None
-    history = []
+    # history = []
     history_len: int = 3
     max_new_tokens: int = 500
     num_beams: int = 1
@@ -88,12 +88,20 @@ class LLamaLLM(BaseAnswer, LLM, ABC):
         return reply
 
     # 将历史对话数组转换为文本格式
-    def history_to_text(self, query):
+    def history_to_text(self, query, history):
+        """
+        历史对话软提示
+            这段代码首先定义了一个名为 history_to_text 的函数，用于将 self.history
+            数组转换为所需的文本格式。然后，我们将格式化后的历史文本
+            再用 self.encode 将其转换为向量表示。最后，将历史对话向量与当前输入的对话向量拼接在一起。
+        :return:
+        """
         formatted_history = ''
-        history = self.history[-self.history_len:] if self.history_len > 0 else []
-        for i, (old_query, response) in enumerate(history):
-            formatted_history += "[Round {}]\n问：{}\n答：{}\n".format(i, old_query, response)
-        formatted_history += "[Round {}]\n问：{}\n答：".format(len(history), query)
+        history = history[-self.history_len:] if self.history_len > 0 else []
+        if len(history) > 0:
+            for i, (old_query, response) in enumerate(history):
+                formatted_history += "### Human：{}\n### Assistant：{}\n".format(old_query, response)
+        formatted_history += "### Human：{}\n### Assistant：".format(query)
         return formatted_history
 
     def prepare_inputs_for_generation(self,
@@ -116,20 +124,6 @@ class LLamaLLM(BaseAnswer, LLM, ABC):
 
         return input_ids, position_ids, attention_mask
 
-    def generate_softprompt_history_tensors(self, query):
-        """
-        历史对话软提示
-            这段代码首先定义了一个名为 history_to_text 的函数，用于将 self.history
-            数组转换为所需的文本格式。然后，我们将格式化后的历史文本
-            再用 self.encode 将其转换为向量表示。最后，将历史对话向量与当前输入的对话向量拼接在一起。
-        :return:
-        """
-
-        # 对话内容
-        # 处理历史对话
-        formatted_history = self.history_to_text(query)
-        return formatted_history
-
     @property
     def _history_len(self) -> int:
         return self.history_len
@@ -147,12 +141,13 @@ class LLamaLLM(BaseAnswer, LLM, ABC):
             "max_new_tokens": self.max_new_tokens,
             "num_beams": self.num_beams,
             "top_p": self.top_p,
+            "do_sample": True,
             "top_k": self.top_k,
             "repetition_penalty": self.repetition_penalty,
             "encoder_repetition_penalty": self.encoder_repetition_penalty,
             "min_length": self.min_length,
             "temperature": self.temperature,
-            "eos_token_id": self.eos_token_id,
+            "eos_token_id": self.checkPoint.tokenizer.eos_token_id,
             "logits_processor": self.logits_processor}
 
         #  向量转换
@@ -173,18 +168,18 @@ class LLamaLLM(BaseAnswer, LLM, ABC):
         new_tokens = len(output_ids[0]) - len(input_ids[0])
         reply = self.decode(output_ids[0][-new_tokens:])
         print(f"response:{reply}")
-        self.history = self.history + [[None, reply]]
+        print(f"+++++++++++++++++++++++++++++++++++")
         return reply
 
     def generatorAnswer(self, prompt: str,
                          history: List[List[str]] = [],
                          streaming: bool = False):
-        if history:
-            self.history = history
+
         # TODO 需要实现chat对话模块和注意力模型，目前_call为langchain的LLM拓展的api，默认为无提示词模式，如果需要操作注意力模型，可以参考chat_glm的实现
-        softprompt = self.generate_softprompt_history_tensors(prompt)
+        softprompt = self.history_to_text(prompt,history=history)
         response = self._call(prompt=softprompt, stop=['\n###'])
+
         answer_result = AnswerResult()
-        answer_result.history = self.history
+        answer_result.history = history + [[prompt, response]]
         answer_result.llm_output = {"answer": response}
         yield answer_result
