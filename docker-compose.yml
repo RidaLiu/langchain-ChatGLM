@@ -11,7 +11,7 @@ services:
     environment:
       - GPT35_KEY_FILE=/run/secrets/chat-gpt35-api-key
       - CALL_AZURE_OPENAI=True
-      - AZURE_OPENAI_ENDPOINT_FILE='https://sandbox-openai-east-us.openai.azure.com'
+      - AZURE_OPENAI_ENDPOINT_FILE=https://sandbox-openai-east-us.openai.azure.com
       - AZURE_OPENAI_KEY_FILE=/run/secrets/chat-azure-gpt-api-key
       - AZURE_OPENAI_VERSION_FILE=/run/secrets/chat-azure-gpt-version
       - AZURE_OPENAI_ENGINE_FILE=/run/secrets/chat-azure-gpt-engine
