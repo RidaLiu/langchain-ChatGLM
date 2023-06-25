@@ -109,9 +109,7 @@ class FastChatOpenAILLM(RemoteRpcModel, LLM, ABC):
             # Not support yet
             if os.getenv("CALL_AZURE_OPENAI") == "True":
                 openai.api_type = "azure"
-                openai.api_base = _read_file(
-                    os.getenv("AZURE_OPENAI_ENDPOINT_FILE")
-                )
+                openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT_FILE")
                 openai.api_version = _read_file(
                     os.getenv("AZURE_OPENAI_VERSION_FILE")
                 )
