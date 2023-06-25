@@ -523,10 +523,10 @@ def api_start(host, port):
     app.get("/local_doc_qa/list_files", response_model=ListDocsResponse)(
         list_docs
     )
-    app.post(
+    app.delete(
         "/local_doc_qa/delete_knowledge_base", response_model=BaseResponse
     )(delete_kb)
-    app.post("/local_doc_qa/delete_file", response_model=BaseResponse)(
+    app.delete("/local_doc_qa/delete_file", response_model=BaseResponse)(
         delete_doc
     )
     app.post("/local_doc_qa/update_file", response_model=BaseResponse)(
