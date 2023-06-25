@@ -189,10 +189,9 @@ async def list_docs(
         default=None, description="Knowledge Base Name", example="kb1"
     )
 ):
-    with open("./kwids.txt", "a") as f:
-        f.write("knowledge_base_id is {0}".format(knowledge_base_id))
     if knowledge_base_id is None or knowledge_base_id == "":
-        return list_kbs()
+        remain_kws = await list_kbs()
+        return remain_kws
 
     local_doc_folder = get_folder_path(knowledge_base_id)
     if not os.path.exists(local_doc_folder):
