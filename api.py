@@ -189,7 +189,8 @@ async def list_docs(
         default=None, description="Knowledge Base Name", example="kb1"
     )
 ):
-    if knowledge_base_id is None:
+    print("knowledge_base_id is {0}".format(knowledge_base_id))
+    if knowledge_base_id is None or knowledge_base_id == "":
         return list_kbs()
 
     local_doc_folder = get_folder_path(knowledge_base_id)
