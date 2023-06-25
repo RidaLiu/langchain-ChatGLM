@@ -22,7 +22,7 @@ def _build_message_template() -> Dict[str, str]:
 def _read_file(file_path: str) -> str:
     if os.path.exists(file_path):
         r = open(file_path, "r")
-        return r.read()
+        return r.read().strip("\n")
     return ""
 
 
