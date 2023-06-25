@@ -35,7 +35,7 @@ export const bing_search = (params: any) => {
 export const deletefile = (params: any) => {
   return api({
     url: '/local_doc_qa/delete_file',
-    method: 'post',
+    method: 'delete',
     data: JSON.stringify(params),
   })
 }
