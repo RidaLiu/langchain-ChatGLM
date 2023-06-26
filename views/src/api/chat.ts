@@ -39,6 +39,14 @@ export const deletefile = (params: any) => {
     data: JSON.stringify(params),
   })
 }
+
+export const delete_knowledge = (params: any) => {
+  return api({
+    url: '/local_doc_qa/delete_knowledge_base',
+    method: 'delete',
+    data: JSON.stringify(params),
+  })
+}
 export const web_url = () => {
   return window.location.origin
 }
