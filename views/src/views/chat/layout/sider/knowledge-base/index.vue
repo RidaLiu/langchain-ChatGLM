@@ -53,7 +53,7 @@ const handleClick = () => {
 }
 async function handleDelete(item: any) {
   // await deletefile(item.value)
-  await delete_knowledge(item.value)
+	await delete_knowledge({"knowledge_base_id":item.value})
   const res = await getfilelist({})
   items.value = []
   res.data.data.forEach((item: any) => {
