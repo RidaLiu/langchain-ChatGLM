@@ -98,7 +98,7 @@ async function handleDelete(item: any) {
                 <SvgIcon icon="ri:delete-bin-line" />
               </button>
             </template>
-            确定删除此文件？
+            确定删除此知识库？
           </NPopconfirm>
         </template>
       </div>
