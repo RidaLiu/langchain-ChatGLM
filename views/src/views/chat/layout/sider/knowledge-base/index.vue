@@ -3,7 +3,7 @@ import { NButton, NForm, NFormItem, NInput, NPopconfirm } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 import filelist from './filelist.vue'
 import { SvgIcon } from '@/components/common'
-import { deletefile, getfilelist,delete_knowledge } from '@/api/chat'
+import { getfilelist,delete_knowledge } from '@/api/chat'
 import { idStore } from '@/store/modules/knowledgebaseid/id'
 const items = ref<any>([])
 const choice = ref('')
