@@ -208,7 +208,7 @@ async def list_docs(
 
 
 async def delete_kb(
-    knowledge_base_id: str = Query(
+    knowledge_base_id: str = Body(
         ..., description="Knowledge Base Name", example="kb1"
     ),
 ):
@@ -226,12 +226,10 @@ async def delete_kb(
 
 
 async def delete_doc(
-    knowledge_base_id: str = Query(
+    knowledge_base_id: str = Body(
         ..., description="Knowledge Base Name", example="kb1"
     ),
-    doc_name: str = Query(
-        None, description="doc name", example="doc_name_1.pdf"
-    ),
+    doc_name: str = Body(..., description="doc name", example="doc_name_1.pdf"),
 ):
     knowledge_base_id = urllib.parse.unquote(knowledge_base_id)
     if not os.path.exists(get_folder_path(knowledge_base_id)):

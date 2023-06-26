@@ -35,7 +35,7 @@ export const bing_search = (params: any) => {
 export const deletefile = (params: any) => {
   return api({
     url: '/local_doc_qa/delete_file',
-    method: 'delete',
+    method: 'post',
     data: JSON.stringify(params),
   })
 }
@@ -43,7 +43,7 @@ export const deletefile = (params: any) => {
 export const delete_knowledge = (params: any) => {
   return api({
     url: '/local_doc_qa/delete_knowledge_base',
-    method: 'delete',
+    method: 'post',
     data: JSON.stringify(params),
   })
 }
