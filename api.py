@@ -208,7 +208,7 @@ async def list_docs(
 
 
 async def delete_kb(
-    knowledge_base_id: str = Body(
+    knowledge_base_id: str = Query(
         ..., description="Knowledge Base Name", example="kb1"
     ),
 ):
