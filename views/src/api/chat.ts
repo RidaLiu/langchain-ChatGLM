@@ -40,13 +40,22 @@ export const deletefile = (params: any) => {
   })
 }
 
-export const delete_knowledge = (params: any) => {
+export const delete_knowledge = (knowledge_base_id: any) => {
   return api({
     url: '/local_doc_qa/delete_knowledge_base',
     method: 'post',
-    data: JSON.stringify(params),
+    // data: JSON.stringify(params),
+    params: { knowledge_base_id: knowledge_base_id},
   })
 }
+
+// export const delete_knowledge = (params: any) => {
+//   return api({
+//     url: '/local_doc_qa/delete_knowledge_base',
+//     method: 'post',
+//     data: JSON.stringify(params),
+//   })
+// }
 export const web_url = () => {
   return window.location.origin
 }
